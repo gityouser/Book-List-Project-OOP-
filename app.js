@@ -23,6 +23,25 @@ UI.prototype.addBookToList = function(book) {
   list.appendChild(row);
 }
 
+//Get book for LS
+UI.prototype.getBook = function() {
+  const book;
+  if(localStorage.getItem('book') === null) {
+    book = [];
+  } else {
+    book = JSON.stringify(localStorage.getItem('book'));
+  }
+
+  return book;
+}
+
+//Add book to LS
+UI.prototype.addBookLS = function(book) {
+  const ui = new UI;
+  const books = ui.getBook();
+  console.log(books);
+}
+
 //Show alert
 UI.prototype.showAlert = function(message, className) {
   const div = document.createElement('div');
@@ -73,6 +92,9 @@ document.querySelector('#book-form').addEventListener('submit', function (e) {
   } else {
     //Add book to list
     ui.addBookToList(book);
+
+    //Add book to LS
+    ui.addBookLS(book);
 
     //Show success
     ui.showAlert('Book Added!', 'success');
