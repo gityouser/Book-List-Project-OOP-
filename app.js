@@ -40,7 +40,7 @@ UI.prototype.showAlert = function(message, className) {
 
 
 //Clear the fields after submit
-UI.prototype.clearFields = function(book) {
+UI.prototype.clearFields = function() {
   document.querySelector('#title').value = '';
   document.querySelector('#author').value = '';
   document.querySelector('#isbn').value = '';
