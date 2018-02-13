@@ -25,21 +25,45 @@ UI.prototype.addBookToList = function(book) {
 
 //Get book for LS
 UI.prototype.getBook = function() {
-  const book;
-  if(localStorage.getItem('book') === null) {
-    book = [];
+  let books;
+  if(localStorage.getItem('books') === null) {
+    books = [];
   } else {
-    book = JSON.stringify(localStorage.getItem('book'));
+    books = JSON.parse(localStorage.getItem('books'));
   }
 
-  return book;
+  return books;
+}
+
+
+//Display books from LS
+UI.prototype.displayBooks = function() {
+  const ui = new UI();
+  const books = ui.getBook();
+  books.forEach(function(book) {
+    ui.addBookToList((book));
+  })
 }
 
 //Add book to LS
 UI.prototype.addBookLS = function(book) {
-  const ui = new UI;
+  let ui = new UI();
   const books = ui.getBook();
-  console.log(books);
+  books.push(book);
+  localStorage.setItem('books', JSON.stringify(books));
+}
+
+//Remove book from LS
+UI.prototype.removeBookLS = function(isbn) {
+  const ui = new UI();
+  let books = ui.getBook();
+  books.forEach(function(book, index) {
+    if(isbn === book.isbn) {
+      books.splice(index, 1)
+    }
+  books = localStorage.setItem('books', JSON.stringify(books));
+  })
+
 }
 
 //Show alert
@@ -110,8 +134,18 @@ document.querySelector('#book-list').addEventListener('click', function(e) {
   if(e.target.className === 'delete') {
     const ui = new UI();
     ui.deleteBook(e.target);
+
+    //Remove book from LS
+    ui.removeBookLS(e.target.parentElement.previousElementSibling.textContent)
+
+
     //Show message
     ui.showAlert('Book Removed!', 'success')
   }
 
+})
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ui = new UI;
+  ui.displayBooks();
 })
